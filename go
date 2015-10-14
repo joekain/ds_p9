@@ -2,4 +2,4 @@
 
 . .access
 mix test
-mix run -e Twitter.test_runner
+mix run -e Main.run
