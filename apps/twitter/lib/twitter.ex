@@ -16,4 +16,11 @@ defmodule Twitter do
     opts = [strategy: :one_for_one, name: Twitter.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  def test_runner do
+    Twitter.Server.get
+    |> Stream.map(fn x -> IO.inspect x end)
+    |> Enum.take(10)
+    |> Enum.to_list
+  end
 end
