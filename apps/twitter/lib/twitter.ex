@@ -8,7 +8,7 @@ defmodule Twitter do
 
     children = [
       # Define workers and child supervisors to be supervised
-      # worker(Twitter.Worker, [arg1, arg2, arg3]),
+      worker(Twitter.Server, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
