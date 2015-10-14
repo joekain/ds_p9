@@ -34,6 +34,12 @@ defmodule UnshorteningPool.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
+      {:httpotion, "~> 2.1.0"},
+      {:blocking_queue, "~> 1.0.0"},
+      {:poolboy,  github: "devinus/poolboy" },
+      {:exactor,  "~> 2.2"}
+   ]
   end
 end
