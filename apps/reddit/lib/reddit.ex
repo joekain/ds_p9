@@ -1,5 +1,12 @@
 defmodule Reddit do
   def get_oauth_token do
+    {:ok, map} =
+      request_oauth_token().body
+      |> Poison.decode
+    map["access_token"]
+  end
+  
+  defp request_oauth_token do
     cfg = config
 
     response = HTTPotion.post "https://www.reddit.com/api/v1/access_token", [
