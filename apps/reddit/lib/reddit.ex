@@ -1,9 +1,9 @@
 defmodule Reddit do
   def get_oauth_token do
-    {:ok, map} =
-      request_oauth_token().body
-      |> Poison.decode
-    map["access_token"]
+    request_oauth_token().body
+    |> Poison.decode
+    |> ok
+    |> Map.get("access_token")
   end
 
   defp request_oauth_token do
@@ -37,16 +37,16 @@ defmodule Reddit do
   end
 
   defp request(endpoint, token) do
-    response = HTTPotion.get "https://oauth.reddit.com/" <> endpoint, [headers: [
+    HTTPotion.get("https://oauth.reddit.com/" <> endpoint, [headers: [
       "User-Agent": "josephkain-test/0.1 by josephkain",
       "Authorization": "bearer #{token}"
-    ]]
-
-    {:ok, result} = response.body
+    ]])
+    |> Map.get(:body)
     |> Poison.decode
-
-    result
+    |> ok
   end
+
+  defp ok({:ok, result}), do: result
 
   def test do
     token = get_oauth_token
