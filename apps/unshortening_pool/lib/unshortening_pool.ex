@@ -24,7 +24,7 @@ defmodule UnshorteningPool do
       {:name, {:local, pool_name}},
       {:worker_module, UnshorteningPool.Worker},
       {:size, 5},
-      {:max_overflow, 10}
+      {:max_overflow, 50}
     ]
   end
 
