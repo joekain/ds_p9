@@ -86,8 +86,7 @@ defmodule Reddit do
     sub = "programming"
 
     token = get_oauth_token
-
-    fetch_hot_perpertually(token, sub)
+    |> fetch_hot_perpertually(sub)
     |> Stream.map(fn item -> item["data"]["id"] end)
     # |> Stream.map(fn id -> get_comments(token, sub, id) end)
     |> Stream.map(fn item -> IO.inspect item end)
