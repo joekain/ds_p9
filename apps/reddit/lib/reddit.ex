@@ -79,16 +79,18 @@ defmodule Reddit do
   def fetch_hot_perpertually(token, sub) do
     Stream.repeatedly(fn -> fetch_100_hot(token, sub) end)
     |> Stream.flat_map(fn x -> x end)  # flatten
-    # fetch_100_hot(token, sub)
   end
 
   def test do
     sub = "programming"
-
     token = get_oauth_token
+
+    token
     |> fetch_hot_perpertually(sub)
     |> Stream.map(fn item -> item["data"]["id"] end)
-    # |> Stream.map(fn id -> get_comments(token, sub, id) end)
+    |> Stream.flat_map(fn id -> get_comments(token, sub, id) end)
+    |> Stream.flat_map(fn item -> item["data"]["children"] end)
+    |> Stream.map(fn item -> item["data"]["body"] || item["data"]["url"] end)
     |> Stream.map(fn item -> IO.inspect item end)
     |> Stream.run
   end
