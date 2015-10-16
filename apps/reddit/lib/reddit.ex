@@ -41,21 +41,8 @@ defmodule Reddit do
   end
 
   defp request(endpoint, token, opts) do
-    HTTPotion.get("https://oauth.reddit.com/" <> endpoint <> query(opts), [headers: [
-      "User-Agent": "josephkain-test/0.1 by josephkain",
-      "Authorization": "bearer #{token}"
-    ]])
-    |> Map.get(:body)
-    |> Poison.decode
+    Reddit.RequestServer.request(endpoint, token, opts)
     |> ok
-  end
-
-  defp query(opts) do
-    string = opts
-    |> Enum.map(fn {key, value} -> "#{key}=#{value}" end)
-    |> Enum.join("&")
-
-    "?" <> string
   end
 
   defp ok({:ok, result}), do: result
@@ -84,6 +71,7 @@ defmodule Reddit do
   def test do
     sub = "programming"
     token = get_oauth_token
+    Reddit.RequestServer.start_link
 
     token
     |> fetch_hot_perpertually(sub)
