@@ -32,6 +32,10 @@ defmodule Reddit do
     request("/r/#{subreddit}/new", token, opts)
   end
 
+  def get_hot(token, subreddit, opts \\ []) do
+    request("/r/#{subreddit}/hot", token, opts)
+  end
+
   def get_comments(token, subreddit, id) do
     request("/r/#{subreddit}/comments/#{id}", token, [limit: 100])
   end
@@ -61,10 +65,21 @@ defmodule Reddit do
     {result["data"]["children"], result["data"]["after"]}
   end
 
+  def fetch_100_hot(token, sub, opts \\ []) do
+    result = get_hot(token, sub, [limit: 3] ++ opts)
+    result["data"]["children"]
+  end
+
   def fetch_new_perpertually(token, sub) do
     Stream.resource(fn -> [] end,
                     fn next -> fetch_100_new(token, sub, [after: next]) end,
                     fn _ -> true end)
+  end
+
+  def fetch_hot_perpertually(token, sub) do
+    Stream.repeatedly(fn -> fetch_100_hot(token, sub) end)
+    |> Stream.flat_map(fn x -> x end)  # flatten
+    # fetch_100_hot(token, sub)
   end
 
   def test do
@@ -72,9 +87,9 @@ defmodule Reddit do
 
     token = get_oauth_token
 
-    fetch_new_perpertually(token, sub)
+    fetch_hot_perpertually(token, sub)
     |> Stream.map(fn item -> item["data"]["id"] end)
-    |> Stream.map(fn id -> get_comments(token, sub, id) end)
+    # |> Stream.map(fn id -> get_comments(token, sub, id) end)
     |> Stream.map(fn item -> IO.inspect item end)
     |> Stream.run
   end
