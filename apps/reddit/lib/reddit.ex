@@ -1,31 +1,8 @@
 defmodule Reddit do
   def get_oauth_token do
-    request_oauth_token().body
-    |> Poison.decode
+    Reddit.RequestServer.get_oauth_token
     |> ok
     |> Map.get("access_token")
-  end
-
-  defp request_oauth_token do
-    cfg = config
-
-    HTTPotion.post "https://www.reddit.com/api/v1/access_token", [
-      body: 'grant_type=password&username=#{cfg[:user]}&password=#{cfg[:pass]}',
-      headers: [
-        "User-Agent": "josephkain-test",
-        "Content-Type": "application/x-www-form-urlencoded"
-      ],
-      basic_auth: {cfg[:client_id], cfg[:secret]}
-    ]
-  end
-
-  defp config do
-    %{
-      user: System.get_env("REDDIT_USER"),
-      pass: System.get_env("REDDIT_PASSWORD"),
-      client_id: System.get_env("REDDIT_CLIENT_ID"),
-      secret: System.get_env("REDDIT_SECRET")
-    }
   end
 
   def get_new(token, subreddit, opts \\ []) do
@@ -69,9 +46,10 @@ defmodule Reddit do
   end
 
   def test do
+    Reddit.RequestServer.start_link
+
     sub = "programming"
     token = get_oauth_token
-    Reddit.RequestServer.start_link
 
     token
     |> fetch_hot_perpertually(sub)

@@ -10,6 +10,10 @@ defmodule Reddit.RequestServer do
     GenServer.call(__MODULE__, {:request, {endpoint, token, opts}})
   end
 
+  def get_oauth_token do
+    GenServer.call(__MODULE__, :get_oauth_token)
+  end
+
   # GenServer callbacks
   def init(_) do
     :timer.send_interval(@delay_seconds * 1000, :tick)
@@ -18,6 +22,10 @@ defmodule Reddit.RequestServer do
 
   def handle_call({:request, params}, from, queue) do
     {:noreply, :queue.in({from, params}, queue)}
+  end
+
+  def handle_call(:get_oauth_token, _, queue) do
+    {:reply, request_oauth_token, queue}
   end
 
   def handle_info(:tick, queue) do
@@ -47,5 +55,29 @@ defmodule Reddit.RequestServer do
     |> Enum.join("&")
 
     "?" <> string
+  end
+
+  defp request_oauth_token do
+    cfg = config
+
+    HTTPotion.post("https://www.reddit.com/api/v1/access_token", [
+      body: 'grant_type=password&username=#{cfg[:user]}&password=#{cfg[:pass]}',
+      headers: [
+        "User-Agent": "josephkain-test",
+        "Content-Type": "application/x-www-form-urlencoded"
+      ],
+      basic_auth: {cfg[:client_id], cfg[:secret]}
+    ])
+    |> Map.get(:body)
+    |> Poison.decode
+  end
+
+  defp config do
+    %{
+      user: System.get_env("REDDIT_USER"),
+      pass: System.get_env("REDDIT_PASSWORD"),
+      client_id: System.get_env("REDDIT_CLIENT_ID"),
+      secret: System.get_env("REDDIT_SECRET")
+    }
   end
 end
