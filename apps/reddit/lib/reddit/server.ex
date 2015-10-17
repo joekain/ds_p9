@@ -3,7 +3,7 @@ defmodule Reddit.Server do
 
   defstart start_link() do
     stream = Reddit.Fetcher.fetch
-    # |> Stream.flat_map(fn tweet -> Twitter.Parser.urls(tweet) end)
+    |> Stream.flat_map(fn tweet -> Reddit.Parser.urls(tweet) end)
 
     initial_state(stream)
   end
