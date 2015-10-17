@@ -20,7 +20,6 @@ defmodule Reddit do
 
   def test_runner do
     Reddit.Server.get
-    |> Stream.flat_map(fn item -> item["data"]["children"] end)
     |> Stream.map(fn item -> item["data"]["body"] || item["data"]["url"] end)
     |> Stream.map(fn item -> IO.inspect item end)
     |> Stream.run

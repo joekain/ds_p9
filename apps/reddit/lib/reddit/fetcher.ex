@@ -8,6 +8,7 @@ defmodule Reddit.Fetcher do
     |> fetch_hot_perpertually(sub)
     |> Stream.map(fn item -> item["data"]["id"] end)
     |> Stream.flat_map(fn id -> get_comments(token, sub, id) end)
+    |> Stream.flat_map(fn item -> item["data"]["children"] end)
   end
 
   defp get_oauth_token do
@@ -54,13 +55,5 @@ defmodule Reddit.Fetcher do
   defp fetch_hot_perpertually(token, sub) do
     Stream.repeatedly(fn -> fetch_100_hot(token, sub) end)
     |> Stream.flat_map(fn x -> x end)  # flatten
-  end
-
-  def test do
-    fetch
-    |> Stream.flat_map(fn item -> item["data"]["children"] end)
-    |> Stream.map(fn item -> item["data"]["body"] || item["data"]["url"] end)
-    |> Stream.map(fn item -> IO.inspect item end)
-    |> Stream.run
   end
 end
