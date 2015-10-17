@@ -7,8 +7,8 @@ defmodule Producer do
     import Supervisor.Spec, warn: false
 
     children = [
-      # Define workers and child supervisors to be supervised
-      # worker(Producer.Worker, [arg1, arg2, arg3]),
+      worker(Producer.Worker, [Reddit.Server], id: :producer_reddit),
+      worker(Producer.Worker, [Twitter.Server], id: :producer_twitter),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

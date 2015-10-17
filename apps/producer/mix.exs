@@ -16,7 +16,7 @@ defmodule Producer.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger],
+    [applications: [:logger, :unshortening_pool, :twitter, :reddit],
      mod: {Producer, []}]
   end
 
@@ -34,6 +34,11 @@ defmodule Producer.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:exactor,  "~> 2.2"},
+      {:unshortening_pool, in_umbrella: true},
+      {:twitter, in_umbrella: true},
+      {:reddit, in_umbrella: true}
+    ]
   end
 end

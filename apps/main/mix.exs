@@ -16,7 +16,7 @@ defmodule Main.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :twitter, :unshortening_pool]]
+    [applications: [:logger, :unshortening_pool, :producer]]
   end
 
   # Dependencies can be Hex packages:
@@ -34,8 +34,8 @@ defmodule Main.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:twitter, in_umbrella: true},
-      {:unshortening_pool, in_umbrella: true}
+      {:unshortening_pool, in_umbrella: true},
+      {:producer, in_umbrella: true}
     ]
   end
 end
