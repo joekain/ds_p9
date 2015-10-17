@@ -8,7 +8,7 @@ defmodule UnshorteningPool do
 
     children = [
       # Define workers and child supervisors to be supervised
-      worker(BlockingQueue, [:infinity, [name: :output_queue]]),
+      worker(BlockingQueue, [:infinity, [name: output_queue]]),
       :poolboy.child_spec(pool_name(), poolboy_config(), []),
     ]
 
@@ -19,6 +19,7 @@ defmodule UnshorteningPool do
   end
 
   defp pool_name, do: UnshorteningPool
+  def output_queue, do: :output_queue
 
   defp poolboy_config do
     [
@@ -32,4 +33,7 @@ defmodule UnshorteningPool do
   def map(enum) do
     UnshorteningPool.Mapper.map_through_pool(enum, pool_name)
   end
+
+  def collect(enum), do: UnshorteningPool.Mapper.collect(enum, pool_name)
+  def output_stream, do: UnshorteningPool.Mapper.output_stream(pool_name)
 end

@@ -1,4 +1,6 @@
-defmodule UnshorteningPool.Mapper do  
+defmodule UnshorteningPool.Mapper do
+  def collect(enum, pool), do: stream_through_pool(enum, pool)
+
   def map_through_pool(enum, pool) do
     enum
     |> resource(pool)
@@ -11,7 +13,7 @@ defmodule UnshorteningPool.Mapper do
         spawn_link fn -> stream_through_pool(enum, pool) end
       end,
 
-      fn _ -> {[BlockingQueue.pop(:output_queue)], nil} end,
+      fn _ -> {[BlockingQueue.pop(UnshorteningPool.output_queue)], nil} end,
       fn _ -> true end
     )
   end
@@ -28,5 +30,10 @@ defmodule UnshorteningPool.Mapper do
       :poolboy.checkin(pool, worker)
       result
     end
+  end
+
+  def output_stream(pool) do
+    BlockingQueue.pop_stream(UnshorteningPool.output_queue)
+    |> extract_and_checkin(pool)
   end
 end
