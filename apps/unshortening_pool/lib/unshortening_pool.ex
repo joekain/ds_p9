@@ -8,7 +8,8 @@ defmodule UnshorteningPool do
 
     children = [
       # Define workers and child supervisors to be supervised
-      :poolboy.child_spec(pool_name(), poolboy_config(), [])
+      worker(BlockingQueue, [:infinity, [name: :output_queue]]),
+      :poolboy.child_spec(pool_name(), poolboy_config(), []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

@@ -1,4 +1,4 @@
-%{"blocking_queue": {:hex, :blocking_queue, "1.0.4"},
+%{"blocking_queue": {:git, "/Users/jkain/Documents/Projects/elixir/blocking_queue/", "3f509e18ba19d620b255408cd611e78aaf58e46f", [branch: "name"]},
   "combine": {:hex, :combine, "0.5.2"},
   "exactor": {:hex, :exactor, "2.2.0"},
   "extwitter": {:hex, :extwitter, "0.5.0"},
