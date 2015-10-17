@@ -1,8 +1,6 @@
 defmodule Reddit.Fetcher do
   @spec fetch :: Enumerable.t
   def fetch do
-    Reddit.RequestServer.start_link
-
     sub = "programming"
     token = get_oauth_token
 
