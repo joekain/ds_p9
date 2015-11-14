@@ -38,7 +38,8 @@ defmodule Reddit.Mixfile do
     [
       {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
       {:httpotion, "~> 2.1.0"},
-      {:poison, "~> 1.5"}
+      {:poison, "~> 1.5"},
+      {:exactor,  "~> 2.2"}
     ]
   end
 end
