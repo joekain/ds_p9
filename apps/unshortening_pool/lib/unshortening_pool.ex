@@ -9,6 +9,7 @@ defmodule UnshorteningPool do
     children = [
       # Define workers and child supervisors to be supervised
       worker(BlockingQueue, [:infinity, [name: output_queue]]),
+      worker(UnshorteningPool.Cache, []),
       :poolboy.child_spec(pool_name(), poolboy_config(), []),
     ]
 
