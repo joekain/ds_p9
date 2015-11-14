@@ -14,12 +14,12 @@ defmodule UnshorteningPool.Worker do
   end
 
   defp check_cache(url, f) do
-    result = UnshorteningPool.Cache.check(url)
-    if !result do
-      result = f.(url)
-      UnshorteningPool.Cache.add(url, result)
-    end
+    UnshorteningPool.Cache.check(url) || update_cache(url, f)
+  end
 
+  defp update_cache(url, f) do
+    result = f.(url)
+    UnshorteningPool.Cache.add(url, result)
     result
   end
 end
