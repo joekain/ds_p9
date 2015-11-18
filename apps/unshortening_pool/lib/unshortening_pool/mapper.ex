@@ -19,10 +19,7 @@ defmodule UnshorteningPool.Mapper do
   end
 
   defp stream_through_pool(enum, pool) do
-    enum
-    |> Stream.map(fn x -> {x, :poolboy.checkout(pool)} end)
-    |> Stream.map(fn {x, worker} -> UnshorteningPool.Worker.work(worker, x) end)
-    |> Stream.run
+    Enum.map(enum, &push_item_through_pool(&1, pool))
   end
 
   defp push_item_through_pool(x, pool) do
