@@ -1,6 +1,9 @@
 defmodule UnshorteningPool do
   use Application
 
+  # Used so we can implement protocols
+  defstruct name: UnshorteningPool
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -19,7 +22,7 @@ defmodule UnshorteningPool do
     Supervisor.start_link(children, opts)
   end
 
-  defp pool_name, do: UnshorteningPool
+  def pool_name, do: UnshorteningPool
   def output_queue, do: :output_queue
 
   defp poolboy_config do
@@ -35,6 +38,7 @@ defmodule UnshorteningPool do
     UnshorteningPool.Mapper.map_through_pool(enum, pool_name)
   end
 
+  def pool, do: %UnshorteningPool{}
   def collect(enum), do: UnshorteningPool.Mapper.collect(enum, pool_name)
   def output_stream, do: UnshorteningPool.Mapper.output_stream(pool_name)
 end

@@ -23,4 +23,13 @@ defmodule UnshorteningPoolTest do
       |> Enum.take(4)
       |> Enum.sort
   end
+
+  test "it should implement Collectable" do
+    Enum.into(input, UnshorteningPool.pool)
+
+    assert expected ==
+      UnshorteningPool.output_stream
+      |> Enum.take(4)
+      |> Enum.sort
+  end
 end
