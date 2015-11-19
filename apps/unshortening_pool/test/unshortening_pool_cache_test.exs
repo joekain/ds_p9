@@ -17,9 +17,4 @@ defmodule UnshorteningPool.Cache.Test do
 
     assert "http://a-different-url.example.com" == Cache.check("http:///www.example.com")
   end
-
-  test "it shold register itself with the name UnshorteningPool.Cache" do
-    Cache.add("http:///www.example.com", "http://a-long-url.example.com")
-    assert "http://a-long-url.example.com" == Cache.check("http:///www.example.com")
-  end
 end
