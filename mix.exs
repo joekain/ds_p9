@@ -21,6 +21,8 @@ defmodule P9.Mixfile do
   # Dependencies listed here are available only for this project
   # and cannot be accessed from applications inside the apps folder
   defp deps do
-    []
+    [
+      {:credo, "~> 0.1.7", only: [:dev, :test]}
+    ]
   end
 end
