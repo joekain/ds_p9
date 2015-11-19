@@ -15,8 +15,8 @@ defmodule UnshorteningPool.Unshortener do
     value
   end
 
-  defp is_special_case(location) do
-    location in [
+  defp is_special_case(url) do
+    url in [
       "https://www.facebook.com/unsupportedbrowser"  # Facebook redirects HTTPotion to the unsupported browser page
     ]
   end
