@@ -5,7 +5,7 @@ defmodule Producer.Worker do
   defstart start_link(module) do
     pid = spawn_link fn ->
       module.get
-      |> UnshorteningPool.collect
+      |> Enum.into(UnshorteningPool.pool)
     end
 
     initial_state(pid)
