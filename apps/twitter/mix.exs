@@ -36,7 +36,7 @@ defmodule Twitter.Mixfile do
   defp deps do
     [{:oauth, github: "tim/erlang-oauth"},
      {:extwitter, "~> 0.2"},
-     {:blocking_queue, git: "/Users/jkain/Documents/Projects/elixir/blocking_queue/", branch: "name"},
+     {:blocking_queue, "~> 1.0.0"},
      {:exactor,  "~> 2.2"}]
   end
 end
