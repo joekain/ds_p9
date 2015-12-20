@@ -37,7 +37,7 @@ defmodule UnshorteningPool.Mixfile do
     [
       {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
       {:httpotion, "~> 2.1.0"},
-      {:blocking_queue, git: "/Users/jkain/Documents/Projects/elixir/blocking_queue/", branch: "name"},
+      {:blocking_queue, "~> 1.0.0"},
       {:poolboy,  github: "devinus/poolboy" },
       {:exactor,  "~> 2.2"}
    ]
